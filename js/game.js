@@ -66,31 +66,96 @@ function menu_screen(config, ALVAR, p) {
 	else if(key[13] && pressed[13]) {	// Enter (down)
 		switch(curFrame) {
 			case 0:			// Mision principal (un jugador)
-			// Pendiente Desarrollo
+			config.NUM_PLAYERS = 1;
+			config.screen_sate++;
+			stop_sample(ALVAR.menuSound);
+			play_sample(ALVAR.soldierSelectionSound, 0.4, 1.0, true);
 			break;
 
 			case 1:			// Multijugador
-			// Pendiente Desarrollo
+			// Pendiente Desarrollo (debe reemplazar los sockets de C)
 			break;
 
 			case 2:			// Leaderborads
-			// Pendiente Desarrollo
+			config.screen_sate = config.screen_sate + 3;
 			break;
 
 			case 3:			// Opciones
-			// Nada
+			// Nunca hizo nada
 			break;
 
 			case 4:			// Salir
-			config.screen_sate = -1;
+			stop_sample(ALVAR.menuSound);
+			config.screen_sate--;
 			curFrame = 0;
+			// Aca deberia ir delay de 0.3 segundos
 			break;
 		}
-		stop_sample(ALVAR.menuSound);
 		play_sample(ALVAR.rechargeSound,0.4,1,false);
-		config.screen_sate++;
 	}
 
 	blit(ALVAR.menuImage,canvas,config.SCREEN_W*curFrame,0,0,0,config.SCREEN_W,config.SCREEN_H);
 }
 
+var animationRow = 0;
+var selectImage = 0;
+
+function selection_screen(config, ALVAR) {
+
+	if(key[37] && pressed[37]) {		// Left (down)
+		play_sample(ALVAR.swapSelectionSound, 0.4, 1, false);
+		frameCount = 0;
+		animationRow = 0;
+	}
+	else if(key[39] && pressed[39]) {	// Right (down)
+		play_sample(ALVAR.swapSelectionSound, 0.4, 1, false);
+		frameCount = 0;
+		animationRow = 1;
+	}
+	else if(key[27] && pressed[27]) {	// Escape (down)
+		stop_sample(ALVAR.soldierSelectionSound);
+		play_sample(ALVAR.swapSelectionSound, 0.4, 1, false);
+		play_sample(ALVAR.menuSound,0.4,1,true);
+		config.screen_sate--;
+	}
+	else if(key[13] && pressed[13]) {	// Enter (down)
+		stop_sample(ALVAR.soldierSelectionSound);
+		config.screen_sate++;
+		switch (animationRow) {
+			case 0:	// Si esta parado en marco
+			play_sample(ALVAR.marcoSound, 0.4, 1, false);
+			selectImage = 0;
+			break;
+
+			case 1:	// Si esta parado en tarma
+			play_sample(ALVAR.tarmaSound, 0.4, 1, false);
+			selectImage = 1;
+			break;
+		}
+		// Aca deberia ir delay de 1 segundo
+	}
+
+	if (frameCount <= config.FPS/2) {		// Si paso 0.5 segundos, reinicio
+		frameCount++;
+	}
+	if(frameCount >= config.FPS/4) {	// Si paso 0.25 segundos desde reinicio
+		blit(ALVAR.selectionImage,canvas,config.SCREEN_W,config.SCREEN_H*animationRow,0,0,config.SCREEN_W,config.SCREEN_H);
+	}
+	if (frameCount < config.FPS/2) {
+		blit(ALVAR.selectionImage,canvas,0,config.SCREEN_H*animationRow,0,0,config.SCREEN_W,config.SCREEN_H);
+	}
+
+}
+
+function leader_screen(config, ALVAR) {
+	// Pendiente Desarrollo (debe reemplazar el file de C con localstorage)
+	if(key[27] && pressed[27]) {	// Escape (down)
+		play_sample(ALVAR.swapSelectionSound, 0.4, 1, false);
+		config.screen_sate = config.screen_sate - 3;
+	}
+	blit(ALVAR.gameOverImage,canvas,0,0,0,0,config.SCREEN_W,config.SCREEN_H);
+}
+
+function gameLoop() {
+	// Pendiente Desarrollo
+}

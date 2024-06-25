@@ -27,14 +27,17 @@ function main()
 	};
 
 	const ALVAR = {
-		titleScreenImage: load_bitmap("./assets/img/titleScreen.png"),	// Cargar imagen del title Screen
-		menuImage: load_bitmap("./assets/img/menu.png"),		// Cargar imagen del menu
-		okaySound: load_sample("./assets/sound/Okay.wav"),		// Cargar sonido de okay
-		menuSound: load_sample("./assets/sound/Menu.wav"),		// Cargar sonido del menu
-		///okaySound: new Audio('./assets/sound/Okay.wav'),		// Cargar sonido de okay
-		///menuSound: new Audio('./assets/sound/Menu.wav'),		// Cargar sonido del menu
-		rechargeSound: load_sample("./assets/sound/Recharge.wav")	// Cargar sonido de recargar
-		///rechargeSound: new Audio('./assets/sound/Recharge.wav')	// Cargar sonido de recargar
+		titleScreenImage: load_bitmap("./assets/img/titleScreen.png"),			// Cargar imagen del title Screen
+		menuImage: load_bitmap("./assets/img/menu.png"),				// Cargar imagen del menu
+		okaySound: load_sample("./assets/sound/Okay.wav"),				// Cargar sonido de okay
+		menuSound: load_sample("./assets/sound/Menu.wav"),				// Cargar sonido del menu
+		rechargeSound: load_sample("./assets/sound/Recharge.wav"),			// Cargar sonido de recargar
+		selectionImage: load_bitmap("./assets/img/soldierSelection.png"),		// Cargar imagen de soldier selection
+		soldierSelectionSound: load_sample("./assets/sound/soldierSelection.wav"),	// Cargar sonido de seleccion de personaje
+		gameOverImage: load_bitmap("./assets/img/GameOver.png"),			// Cargar imagen del fin del juego
+		swapSelectionSound: load_sample("./assets/sound/swapSelection.wav"),		// Cargar sonido de cambio de seleccion
+		marcoSound: load_sample("./assets/sound/Marco.wav"),				// Cargar sonido de seleccion de marco
+		tarmaSound: load_sample("./assets/sound/Tarma.wav")				// Cargar sonido de seleccion de tarma
 	};
 
 	enable_debug('debug');
@@ -54,10 +57,19 @@ function main()
 				menu_screen(config, ALVAR, p);
 				break;
 
+				case 2:
+				selection_screen(config, ALVAR);
+				break;
+
+				case 3:
+				gameLoop();
+				break;
+
+				case 4:
+				leader_screen(config, ALVAR);
+				break;
+
 			}
-			
-			// update();
-			// draw();
 		},BPS_TO_TIMER(config.FPS));
 	});
 	return 0;
