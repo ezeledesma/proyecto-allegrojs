@@ -11,8 +11,9 @@ canvas {
 	margin: 10px auto; /* center horizontally and add a bit of margin vertically */
 	display:block; /* display as a non-inline block */
 	border-radius:12px; /* makes the border round and sound */
-	width: 640px;
-	height: 480px; }
+	/* width: 640px;
+	height: 480px; */
+}
 
 /* this applies to debug box */
 #debug { 
@@ -26,5 +27,6 @@ canvas {
 	box-shadow:#888 0px 0px 32px; /* fancy shadow fx */
 	margin: 10px auto; /* center horizontally and space vertically */
 	padding:10px; /* pad a bit for readibility */
-	border-radius:12px; /* makes the border round and sound */ }
+	border-radius:12px; /* makes the border round and sound */
+}
 

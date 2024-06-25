@@ -1377,6 +1377,7 @@ function load_sample(filename)
 	return sample;
 }
 
+
 /// Does nothing.
 /// @todo: something that happens here
 function destroy_sample(filename)
@@ -1411,7 +1412,7 @@ function adjust_sample(sample,vol,freq,loop)
 	sample.volume = vol;
 	sample.element.volume = sample.volume*_volume;
 	sample.element.loop = loop;
-	sample.element.playbackRate = freq;
+	//sample.element.playbackRate = freq;		// ETL: Se comenta, no funciona correctamente en Chrome
 }
 
 /// Stops playing
