@@ -1,4 +1,4 @@
-# AllegroJs - Juego 2D "MetalSlug": [MetalSlug AllegroJs](https://github.com/ezeledesma/proyecto-allegrojs)
+# AllegroJs - Juego 2D: [MetalSlug Lite](https://ezeledesma.github.io/proyecto-allegrojs/)
 
 ## Recursos utilizados
 * Libreria AllegroJs
