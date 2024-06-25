@@ -1,25 +1,21 @@
-body { /* this applies to the entire document */
-	font-family:'Roboto', sans-serif; /* Select font without serifs */
-}
+/* Reset */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box; }
 
-h1 { /* this applies to big header text */
-	text-align:center; /* align title centered */
-	font-size:400%; /* make the font really big */
-	text-shadow:#ccc 1px 1px 0px; /* add a fancy shadow effect */
-	padding:0px; /* disable padding (inner margins)  */
-	margin:0px; /* disable margins */
-	font-weight:normal; /* nullifies font boldness */
-}
-
-canvas { /* this applies to our game area */
+/* this applies to our game area */
+canvas {
 	border:1px solid #888; /* set subtle gray border */
 	box-shadow:#888 0px 0px 32px; /* add a fancy shadow effect */
 	margin: 10px auto; /* center horizontally and add a bit of margin vertically */
 	display:block; /* display as a non-inline block */
 	border-radius:12px; /* makes the border round and sound */
-}
- 
-#debug { /* this applies to debug box */
+	width: 640px;
+	height: 480px; }
+
+/* this applies to debug box */
+#debug { 
 	text-align:left; /* align text to the left */
 	width:620px; /* set width to 630 pixels */
 	height:460px; /* set height to 460 pixels */
@@ -30,9 +26,5 @@ canvas { /* this applies to our game area */
 	box-shadow:#888 0px 0px 32px; /* fancy shadow fx */
 	margin: 10px auto; /* center horizontally and space vertically */
 	padding:10px; /* pad a bit for readibility */
-	border-radius:12px; /* makes the border round and sound */
-}
+	border-radius:12px; /* makes the border round and sound */ }
 
-#footer { /* this is a footer*/
-	text-align:center; /* you never imagined what would happen if youi removed this! */
-}
