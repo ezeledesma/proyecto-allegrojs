@@ -154,8 +154,10 @@ function leader_screen(config, ALVAR) {
 		config.screen_sate = config.screen_sate - 3;
 	}
 	blit(ALVAR.gameOverImage,canvas,0,0,0,0,config.SCREEN_W,config.SCREEN_H);
+	stretch_blit(ALVAR.gameOverImage,canvas,0,0,config.gameOverWidth,config.gameOverHeight,0,0,config.SCREEN_W,config.SCREEN_H)
 }
 
 function gameLoop() {
 	// Pendiente Desarrollo
 }
+
