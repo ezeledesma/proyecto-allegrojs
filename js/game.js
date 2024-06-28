@@ -103,7 +103,7 @@ function updateKeys(ALVAR, config) {
 
 function updateKeysNet(ALVAR, config) {
 	jugador = ALVAR.jugador;
-	// try {
+	try {
 	if(jugador[1].key.left && !LEFT2) {		// Left2 (down)
 		LEFT2 = 1;
 		jugador[1].isMoving = LEFT2;
@@ -175,14 +175,8 @@ function updateKeysNet(ALVAR, config) {
 		A2 = 0;
 	}
 
-	// else if (!ALVAR.jugador[0].key.left && LEFT) {
-	// 	LEFT = 0;
-	// 	ALVAR.jugador[0].isMoving = 0;
-	// 	ALVAR.jugador[0].foot_curFrame = 0;
-	// 	ALVAR.jugador[0].foot_frameCount = 0;
-	// }
-	// }
-	// catch {}
+	}
+	catch {}
 }
 
 function updateP2(ALVAR, config) {
@@ -381,7 +375,7 @@ function gameLoop(config, ALVAR, p) {
 	if(config.NUM_PLAYERS > 1) {
 		// Si estoy conectado a cliente, recibir datos
 		config.netCount++;
-		if(config.netCount >= 60 / (1000/config.FPS)) {	// Lammados aprox cada 60ms
+		if(config.netCount >= 40 / (1000/config.FPS)) {	// Lammados aprox cada 60ms
 			get_network_data(config.buffer); // Descomentar para comenzar a realizar las consultas
 			ALVAR.jugador[1].key = config.buffer[0];
 			config.netCount = 0;
