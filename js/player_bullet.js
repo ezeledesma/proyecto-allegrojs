@@ -85,7 +85,7 @@ function UpdateBullet(bullet, explosions, config) {
 				bullet[i].x += (bullet[i].speed) * bullet[i].direction;
 			}
 			if(bullet[i].x + bullet[i].xi - config.FONDO_X > config.SCREEN_W || bullet[i].x + bullet[i].xi - config.FONDO_X < 0) {														// Si la bala llega a cualquier borde
-					bullet[i].lives = 0;
+				bullet[i].lives = 0;
 			}
 			else if (bullet[i].y > config.SCREEN_H-config.ground) {
 				StartExplosions(explosions, bullet[i].x  + bullet[i].xi - config.FONDO_X, bullet[i].y, 1, config);
@@ -97,11 +97,11 @@ function UpdateBullet(bullet, explosions, config) {
 }
 
 function CollideBullet(ALVAR, config) {
-	bullet = ALVAR.bullets;
-	enemies = ALVAR.enemies;
-	jugador = ALVAR.jugador;
-	enemiesDead = ALVAR.enemiesDead;
-	explosions = ALVAR.explosions;
+	let bullet = ALVAR.bullets;
+	let enemies = ALVAR.enemies;
+	let jugador = ALVAR.jugador;
+	//let enemiesDead = ALVAR.enemiesDead;
+	let explosions = ALVAR.explosions;
 	let i = 0;
 	let col = 0;
 	while (i < config.NUM_BULLETS) {
@@ -109,7 +109,7 @@ function CollideBullet(ALVAR, config) {
 			let j = 0;
 			while (j < config.NUM_ENEMIES) {
 				if(enemies[j].lives > 0) {
-					if(bullet[i].x > (enemies[j].x - enemies[j].boundx*enemies[j].animationDirection) && bullet[i].x < (enemies[j].x + enemies[j].boundx) && bullet[i].y > (enemies[j].y - enemies[j].boundy) && bullet[i].y < enemies[j].y) {
+					if(bullet[i].x > (enemies[j].x - enemies[j].boundx*enemies[j].animationDirection*(config.SCREEN_H/ALVAR.fondoImage.h)) && bullet[i].x < (enemies[j].x + enemies[j].boundx*(config.SCREEN_H/ALVAR.fondoImage.h)) && bullet[i].y > (config.SCREEN_H + enemies[j].y - enemies[j].boundy*(config.SCREEN_H/ALVAR.fondoImage.h)) && bullet[i].y < config.SCREEN_H + enemies[j].y) {
 						// Si hay colision con un enemigo
 						bullet[i].lives--;
 						if (bullet[i].bulletImage){																							// Si es una granada
@@ -121,7 +121,7 @@ function CollideBullet(ALVAR, config) {
 						}
 						if (enemies[j].lives <= 0) {																					// Si el enemigo "muere"
 							jugador[bullet[i].player].score++;
-							StartEnemyDead(enemiesDead, enemies, j, config);
+							StartEnemyDead(ALVAR, j, config);
 						}
 						if (!bullet[i].bulletImage) {																						// Si es una bala
 							break;																																// La bala colisiona con un solo enemigo y la granada en "area"

@@ -2,6 +2,15 @@
 
 - Reescalar imagenes de explosiones y balas
 - Mejorar movimiento de granada, para que tome velocidad que tiene el jugador (deberia llegar mas lejos si la lanza moviendose)
+- Mejorar todas las colisiones
+- Mostrar score, balas, vida, etc
+- Que el juego finalice al llegar al final del mapa
+- No permitir avanzar si existen enemigos con vida?
+	-> Si se puede avanzar entonces corregir posicion en x de enemigo, sus balas y muertes al desplazarse
+- Agregar cambio de nivel?
+
+- Terminar funcionalidad Multijugador
+- Terminar funcionalidad LeaderBoard
 
 */
 
@@ -196,7 +205,10 @@ function selection_screen(config, ALVAR) {
 		}
 		InitPlayer(ALVAR, ALVAR.playerImage, ALVAR.player2Image, ALVAR.foot_playerImage, selectImage, config);
 		InitBullet(ALVAR, ALVAR.bulletImage, ALVAR.playerGrenadeImage, ALVAR.bulletSound, config);
-		InitExplosions(ALVAR.explosions, ALVAR.explosionImage, ALVAR.explosionSound, config)
+		InitEnemy(ALVAR.enemies, ALVAR.enemyImage, config);
+		InitEnemyDead(ALVAR.enemiesDead, ALVAR.enemyImage, ALVAR.enemyDeadSound, config);
+		Enemy_InitBullet(ALVAR.enemiesBullet, ALVAR.grenadeImage, ALVAR.rocketImage, config);
+		InitExplosions(ALVAR.explosions, ALVAR.explosionImage, ALVAR.explosionSound, config);
 		al_rest(config, 0.7); // Puedo pasar una fn para que se ejecute
 	}
 
@@ -326,6 +338,18 @@ function gameLoop(config, ALVAR, p) {
 	DrawPlayer(ALVAR, config);
 	DrawBullet(ALVAR, config);
 	DrawExplosions(ALVAR.explosions, config);
+	
+	StartEnemy(ALVAR.enemies, config);
+	UpdateEnemy(ALVAR, config);
+	CollideBullet(ALVAR, config);
+	UpdateEnemyDead(ALVAR.enemiesDead, config);
+	Enemy_UpdateBullet(ALVAR, config);
+	Enemy_CollideBullet(ALVAR, config);
+	
+	
+	DrawEnemy(ALVAR, config);
+	DrawEnemyDead(ALVAR, config);
+	Enemy_DrawBullet(ALVAR, config);
 
 }
 

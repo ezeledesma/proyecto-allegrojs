@@ -2,47 +2,50 @@ function InitPlayer(ALVAR, image, image2, foot_image, selectImage , config) {
 	let jugador = ALVAR.jugador;
 	let i = 0;
 	while (i < config.NUM_PLAYERS) {
-		jugador[i].x = 0;																			// Posicion en x del jugador
-		jugador[i].y = -config.ground;												// Posicion en y del jugador
-		jugador[i].lives = 3;																	// Cantidad de vidas
-		jugador[i].speed = 6;																	// Velocidad
-		jugador[i].boundx = 30;																// Tamaño de colision
-		jugador[i].boundy = 40;																// Tamaño de colision
-		jugador[i].score = 0;																	// Score del jugador
-
-		jugador[i].maxFrame = 7;															// Ultimo frame
-		jugador[i].curFrame = 0;															// Frame actual
-		jugador[i].frameCount = 0;														// Contador de frame
-		jugador[i].frameDelay = 4;														// Tiempo de espera entre frame
-		jugador[i].frameWidth = 80;														// Ancho del frame
-		jugador[i].frameHeight = 50;													// Alto del frame
-		jugador[i].animationRow = 0;													// Fila de la animacion
-		jugador[i].ajuste = 0;																// Ajuste para cuando dispara (frame mas largo)
-		jugador[i].animationDirection = 0;										// Direccion del sprite (0 mirando a la izquierda)
-
-		jugador[i].isMoving = 0;															// Indicador de jugador en movimiento
-		jugador[i].jump = 0;																	// Saltar
-		jugador[i].jump_allowed = 1;													// Salto permitido
-		jugador[i].speed_y = -3;															// Velocidad inicial en y
-
-		jugador[i].machineGun = 1;														// Variable para habilitar/deshabilitar la machineGun
-		jugador[i].ammo = 200;																// Balas disponibles para las armas que no son la pistola
-		jugador[i].shoot_delay = 4;														// Cadencia de disparo
-		jugador[i].count = 0;																	// Contador para la cadencia
-		jugador[i].bombs = 80;																// Bombas disponibles
-		jugador[i].count2 = 0;																// Segundo contador de cadencia (para las bombas)
-
-		jugador[i].foot_x = jugador[i].x;
-		jugador[i].foot_y = jugador[i].y;
-		jugador[i].foot_maxFrame = 1;
-		jugador[i].foot_curFrame = 0;
-		jugador[i].foot_frameCount = 0;
-		jugador[i].foot_frameDelay = 2;
-		jugador[i].foot_frameWidth = 40;
-		jugador[i].foot_frameHeight = 50;
-		jugador[i].foot_animationRow = 0;
-		jugador[i].foot_image = foot_image;
-	i++;
+		jugador.push({
+			x : 0,																			// Posicion en x del jugador
+			y : -config.ground,												// Posicion en y del jugador
+			lives : 3,																	// Cantidad de vidas
+			speed : 6,																	// Velocidad
+			boundx : 30,																// Tamaño de colision
+			boundy : 40,																// Tamaño de colision
+			score : 0,																	// Score del jugador
+	
+			maxFrame : 7,															// Ultimo frame
+			curFrame : 0,															// Frame actual
+			frameCount : 0,														// Contador de frame
+			frameDelay : 4,														// Tiempo de espera entre frame
+			frameWidth : 80,														// Ancho del frame
+			frameHeight : 50,													// Alto del frame
+			animationRow : 0,													// Fila de la animacion
+			ajuste : 0,																// Ajuste para cuando dispara (frame mas largo)
+			animationDirection : 0,										// Direccion del sprite (0 mirando a la izquierda)
+	
+			isMoving : 0,															// Indicador de jugador en movimiento
+			jump : 0,																	// Saltar
+			jump_allowed : 1,													// Salto permitido
+			speed_y : -3,															// Velocidad inicial en y
+	
+			machineGun : 1,														// Variable para habilitar/deshabilitar la machineGun
+			ammo : 200,																// Balas disponibles para las armas que no son la pistola
+			shoot_delay : 4,														// Cadencia de disparo
+			count : 0,																	// Contador para la cadencia
+			bombs : 80,																// Bombas disponibles
+			count2 : 0,																// Segundo contador de cadencia (para las bombas)
+	
+			foot_x : 0,
+			foot_y : -config.ground,
+			foot_maxFrame : 1,
+			foot_curFrame : 0,
+			foot_frameCount : 0,
+			foot_frameDelay : 2,
+			foot_frameWidth : 40,
+			foot_frameHeight : 50,
+			foot_animationRow : 0,
+			foot_image : foot_image,
+			key:{}
+		})
+		i++;
 	}
 	if (!selectImage) {																		// Si mandaron un 0
 		jugador[0].image = image;														// Jugador 1 es marco

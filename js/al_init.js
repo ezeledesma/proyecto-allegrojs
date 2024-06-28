@@ -62,16 +62,11 @@ function AL_INIT (config, ALVAR) {
 	ALVAR.player2Image = load_bitmap("./assets/img/TarmaRoving - Body.png");	// Cargar segunda imagen del player
 
 	/* Nuevo: se agregan estos los structs de C como array de objetos dentro de ALVAR en JS */
-	ALVAR.jugador = [{
-		key: {
-		// left:false,
-		// right:false
-		}
-	}];
+	ALVAR.jugador = [];
 	ALVAR.bullets = [];
-	ALVAR.enemies = [config.NUM_ENEMIES];
-	ALVAR.enemiesDead = [config.NUM_ENEMIESDEAD];
-	ALVAR.enemiesBullet = [config.NUM_E_BULLETS];
+	ALVAR.enemies = [];
+	ALVAR.enemiesDead = [];
+	ALVAR.enemiesBullet = [];
 	ALVAR.explosions = [];
 
 }
