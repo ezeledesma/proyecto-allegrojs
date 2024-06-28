@@ -61,11 +61,11 @@ function Enemy_FireBullet(ALVAR, eNum, Enemy_bulletDirection, config) {
 			enemiesBullet[i].speed = 2;
 			enemiesBullet[i].speed_y = -2;
 			enemiesBullet[i].angle = 0;
-			if (enemies[i].animationRow == 2) {																									// Si estan lanzando granadas
+			if (enemies[eNum].animationRow == 2) {																									// Si estan lanzando granadas
 				enemiesBullet[i].bulletImage = 0;
 				enemiesBullet[i].speed = 4;
 			}
-			else if (enemies[i].animationRow == 3) {																						// Si estan lanzando cohetes
+			else if (enemies[eNum].animationRow == 3) {																						// Si estan lanzando cohetes
 				enemiesBullet[i].bulletImage = 1;
 				enemiesBullet[i].speed = 2;
 			}

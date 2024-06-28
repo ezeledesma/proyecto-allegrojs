@@ -14,6 +14,7 @@ function AL_INIT (config, ALVAR) {
 	config.font = 10;		// Tamaño de la fuente
 	config.ground = 100;		// Piso del juego
 	config.NUM_E_BULLETS = 10;	// Balas de enemigos maximas en pantalla
+	//config.NUM_E_BULLETS = config.NUM_ENEMIES;	// -> Balas de enemigos maximas en pantalla (problema cuando no es la misma cantidad de enemigos?) FIXED?
 	config.FONDO_X = 0;		// Inicio del fondo (se usa para recorrerlo)
 	config.FONDO_W = 3054;		// Variable para establecer el fin del fondo	// al_get_bitmap_width
 	config.FONDO_H = 224;		// Variable para establecer la altura del fondo	// al_get_bitmap_height
@@ -28,7 +29,7 @@ function AL_INIT (config, ALVAR) {
 	config.buffer = [];		// Buffer para cargar lo enviado por cliente (jugador 2)
 	config.keyP1 = [];		// Datos de teclas presionadas por servidor (jugador 1)
 	config.keyP2 = [];		// Datos de teclas presionadas por cliente (jugador 2)
-	config.netCount;		// Contador para refrescar conexion con cliente (jugador 2)
+	config.netCount = 0;		// Contador para refrescar conexion con cliente (jugador 2)
 	//config.net = false;		// Estado de conexion con cliente (jugador 2) (se esta controlando por NUM_PLAYERS)
 
 	/**Iniciacion de componentes basicos de allegro*/

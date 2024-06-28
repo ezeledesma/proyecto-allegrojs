@@ -20,6 +20,12 @@ var SPACE = 0;
 var S = 0;
 var A = 0;
 
+var LEFT2 = 0;
+var RIGHT2 = 0;
+var SPACE2 = 0;
+var S2 = 0;
+var A2 = 0;
+
 function updateKeys(ALVAR, config) {
 	jugador = ALVAR.jugador;
 
@@ -91,6 +97,140 @@ function updateKeys(ALVAR, config) {
 	}
 	else if (!key[65]) {		// A (up)
 		jugador[0].key.a = false;
+	}
+
+}
+
+function updateKeysNet(ALVAR, config) {
+	jugador = ALVAR.jugador;
+	// try {
+	if(jugador[1].key.left && !LEFT2) {		// Left2 (down)
+		LEFT2 = 1;
+		jugador[1].isMoving = LEFT2;
+		jugador[1].foot_curFrame = 0;
+		jugador[1].foot_frameCount = 0;
+	}
+	else if (!jugador[1].key.left && LEFT2) {	// Left2 (up)
+		LEFT2 = 0;
+		jugador[1].isMoving = LEFT2;
+		jugador[1].foot_curFrame = 0;
+		jugador[1].foot_frameCount = 0;
+	}
+
+	if(jugador[1].key.right && !RIGHT2) {		// Right2 (down)
+		RIGHT2 = 1;
+		jugador[1].isMoving = RIGHT2;
+		jugador[1].foot_curFrame = 0;
+		jugador[1].foot_frameCount = 0;
+	}
+	else if (!jugador[1].key.right && RIGHT2) {	// Right2 (up)
+		RIGHT2 = 0;
+		jugador[1].isMoving = RIGHT2;
+		jugador[1].foot_curFrame = 0;
+		jugador[1].foot_frameCount = 0;
+	}
+
+	if(jugador[1].key.space && !SPACE2) {		// Space2 (down)
+		SPACE2 = 1;
+		//SPACE2 = status;
+	}
+	else if (!jugador[1].key.space && SPACE2) {	// Space2 (up)
+		SPACE2 = 0;
+	}
+
+	if(jugador[1].key.s && !S2) {		// S2 (down)
+		S2 = 1;
+		if (!jugador[1].machineGun && S2) {																	// Si no tiene machinGun
+			if (!jugador[1].animationDirection) {																// Si el jugador esta mirando hacia la derecha
+				FireBullet(ALVAR, 1, 0, config, 1);
+			}
+			else {
+				FireBullet(ALVAR, -1, 0, config, 1);
+			}
+		}
+	}
+	else if (!jugador[1].key.s && S2) {	// S2 (up)
+		S2 = 0;
+	}
+
+	if(jugador[1].key.a && !A2) {		// A2 (down)
+		A2 = 1;
+		if (jugador[1].bombs > 0) {																							// Si tiene municion
+			if (jugador[1].count2 < 0/*jugador[1].shoot_delay*2*/) {
+				jugador[1].count2++;
+			}
+			else {
+				if (!jugador[1].animationDirection) {																// Si el jugador esta mirando hacia la derecha
+					FireBullet(ALVAR, 1, 1, config, 1);
+				}
+				else {
+					FireBullet(ALVAR, -1, 1, config, 1);
+				}
+				jugador[1].bombs--;
+				jugador[1].count2 = 0;
+			}
+		}
+	}
+	else if (!jugador[1].key.a && A2) {	// A2 (up)
+		A2 = 0;
+	}
+
+	// else if (!ALVAR.jugador[0].key.left && LEFT) {
+	// 	LEFT = 0;
+	// 	ALVAR.jugador[0].isMoving = 0;
+	// 	ALVAR.jugador[0].foot_curFrame = 0;
+	// 	ALVAR.jugador[0].foot_frameCount = 0;
+	// }
+	// }
+	// catch {}
+}
+
+function updateP2(ALVAR, config) {
+	try {
+		if(LEFT2) {
+			if(ALVAR.jugador[1].x >= ALVAR.jugador[1].speed) {												// Mientras este presionada la izquierda
+				MovePlayerLeft(ALVAR.jugador, 1, config);
+			}
+		}
+		else {
+	
+		}
+		if(RIGHT2) {
+			MovePlayerRight(ALVAR.jugador, 1, ALVAR.enemiesDead, config, ALVAR.enemies);
+		}
+		else {
+	
+		}
+
+		if(S2) {
+			if (ALVAR.jugador[1].machineGun && ALVAR.jugador[1].ammo) {											// Si tiene machineGun y municion
+				if (ALVAR.jugador[1].count < ALVAR.jugador[1].shoot_delay) {
+					ALVAR.jugador[1].count++;
+				}
+				else {
+					if (!ALVAR.jugador[1].animationDirection) {														// Si el jugador esta mirando hacia la derecha
+						FireBullet(ALVAR, 1, 0, config, 1);
+					}
+					else {
+						FireBullet(ALVAR, -1, 0, config, 1);
+					}
+					ALVAR.jugador[1].ammo--;
+					ALVAR.jugador[1].count = 0;
+				}
+			}
+			else {
+				ALVAR.jugador[1].machineGun = 0;
+			}
+		}
+
+		if(SPACE2) {
+			if (ALVAR.jugador[1].jump_allowed) {
+				ALVAR.jugador[1].jump = 1;
+			}
+		}
+	}
+	catch {
+
 	}
 
 }
@@ -241,14 +381,17 @@ function gameLoop(config, ALVAR, p) {
 	if(config.NUM_PLAYERS > 1) {
 		// Si estoy conectado a cliente, recibir datos
 		config.netCount++;
-		if(config.netCount == config.FPS) {
-			//get_network_data(config.buffer); // Descomentar para comenzar a realizar las consultas
+		if(config.netCount >= 60 / (1000/config.FPS)) {	// Lammados aprox cada 60ms
+			get_network_data(config.buffer); // Descomentar para comenzar a realizar las consultas
 			ALVAR.jugador[1].key = config.buffer[0];
 			config.netCount = 0;
+			updateKeysNet(ALVAR, config);
 		}
 	}
 
 	updateKeys(ALVAR, config);
+
+	updateP2(ALVAR, config)
 
 	if(ALVAR.jugador[0].key.escape) {
 	}
