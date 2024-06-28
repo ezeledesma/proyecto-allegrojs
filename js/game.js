@@ -1,54 +1,87 @@
+/* TODO
+
+- Reescalar imagenes de explosiones y balas
+- Mejorar movimiento de granada, para que tome velocidad que tiene el jugador (deberia llegar mas lejos si la lanza moviendose)
+
+*/
+
 var LEFT = 0;
 var RIGHT = 0;
 var SPACE = 0;
 var S = 0;
+var A = 0;
 
-function updateKeys(jugador) {
+function updateKeys(ALVAR, config) {
+	jugador = ALVAR.jugador;
 
 	if(key[37] && pressed[37]) {	// Left (down)
-		jugador.key.left = true;
+		jugador[0].key.left = true;
 		LEFT = 1;
 	}
 	else if (!key[37]) {		// Left (up)
-		jugador.key.left = false;
+		jugador[0].key.left = false;
 	}
 	
 	if(key[39] && pressed[39]) {	// Right (down)
-		jugador.key.right = true;
+		jugador[0].key.right = true;
 		RIGHT = 1;
 	}
 	else if (!key[39]) {		// Right (up)
-		jugador.key.right = false;
+		jugador[0].key.right = false;
 	}
 	
 	if(key[27] && pressed[27]) {	// Escape (down)
-		jugador.key.escape = true;
+		jugador[0].key.escape = true;
 	}
 	else if (!key[27]) {		// Escape (up)
-		jugador.key.escape = false;
+		jugador[0].key.escape = false;
 	}
 	
 	if(key[32] && pressed[32]) {	// Space (down)
-		jugador.key.space = true;
+		jugador[0].key.space = true;
 		SPACE = 1;
 	}
 	else if (!key[32]) {		// Space (up)
-		jugador.key.space = false;
+		jugador[0].key.space = false;
 	}
 	
 	if(key[83] && pressed[83]) {	// S (down)
-		jugador.key.s = true;
+		jugador[0].key.s = true;
 		S = 1;
+		if (!jugador[0].machineGun) {																			// Si no tiene machinGun
+			if (!jugador[0].animationDirection) {														// Si el jugador esta mirando hacia la derecha
+				FireBullet(ALVAR, 1, 0, config, 0);
+			}
+			else {
+				FireBullet(ALVAR, -1, 0, config, 0);
+			}
+		}
 	}
 	else if(!key[83]) {		// S (up)
-		jugador.key.s = false;
+		jugador[0].key.s = false;
 	}
 	
 	if(key[65] && pressed[65]) {	// A (down)
-		jugador.key.a = true;
+		jugador[0].key.a = true;
+		A = 1;
+		if (ALVAR.jugador[0].bombs > 0) {																				// Si tiene municion
+			if (ALVAR.jugador[0].count2 < 0/*ALVAR.jugador[0].shoot_delay*2*/) {
+				ALVAR.jugador[0].count2++;
+			}
+			else {
+				if (!ALVAR.jugador[0].animationDirection) {													// Si el jugador esta mirando hacia la derecha
+						FireBullet(ALVAR, 1, 1, config, 0);
+					}
+				else {
+						FireBullet(ALVAR, -1, 1, config, 0);
+				}
+				ALVAR.jugador[0].bombs--;
+				ALVAR.jugador[0].count2 = 0;
+			}
+		}
 	}
 	else if (!key[65]) {		// A (up)
-		jugador.key.a = false;
+		jugador[0].key.a = false;
 	}
 
 }
@@ -162,7 +195,9 @@ function selection_screen(config, ALVAR) {
 			break;
 		}
 		InitPlayer(ALVAR, ALVAR.playerImage, ALVAR.player2Image, ALVAR.foot_playerImage, selectImage, config);
-		al_rest(config, 1); // Puedo pasar una fn para que se ejecute
+		InitBullet(ALVAR, ALVAR.bulletImage, ALVAR.playerGrenadeImage, ALVAR.bulletSound, config);
+		InitExplosions(ALVAR.explosions, ALVAR.explosionImage, ALVAR.explosionSound, config)
+		al_rest(config, 0.7); // Puedo pasar una fn para que se ejecute
 	}
 
 	if (frameCount <= config.FPS/2) {		// Si paso 0.5 segundos, reinicio
@@ -201,7 +236,7 @@ function gameLoop(config, ALVAR, p) {
 		}
 	}
 
-	updateKeys(ALVAR.jugador[0]);
+	updateKeys(ALVAR, config);
 
 	if(ALVAR.jugador[0].key.escape) {
 	}
@@ -238,25 +273,59 @@ function gameLoop(config, ALVAR, p) {
 	}
 
 	if(ALVAR.jugador[0].key.s && S) {
-		if (!ALVAR.jugador[0].machineGun) {																			// Si no tiene machinGun
-			if (!ALVAR.jugador[0].animationDirection) {														// Si el jugador esta mirando hacia la derecha
-				FireBullet(ALVAR.bullets, ALVAR.jugador, 1, 0, config, 0);
+		if (ALVAR.jugador[0].machineGun && ALVAR.jugador[0].ammo) {											// Si tiene machineGun y municion
+			if (ALVAR.jugador[0].count < ALVAR.jugador[0].shoot_delay) {
+				ALVAR.jugador[0].count++;
 			}
 			else {
-				FireBullet(ALVAR.bullets, ALVAR.jugador, -1, 0, config, 0);
+				if (!ALVAR.jugador[0].animationDirection) {														// Si el jugador esta mirando hacia la derecha
+					FireBullet(ALVAR, 1, 0, config, 0);
+				}
+				else {
+					FireBullet(ALVAR, -1, 0, config, 0);
+				}
+				ALVAR.jugador[0].ammo--;
+				ALVAR.jugador[0].count = 0;
 			}
+		}
+		else {
+			ALVAR.jugador[0].machineGun = 0;
 		}
 	}
 	else if (!ALVAR.jugador[0].key.s && S) {
 		S = 0;
 	}
 
-	if(ALVAR.jugador[0].key.a) {
+	if(ALVAR.jugador[0].key.a && A) {
+		/* Se pasa a tecla presionada
+		if (ALVAR.jugador[0].bombs > 0) {																				// Si tiene municion
+			if (ALVAR.jugador[0].count2 < ALVAR.jugador[0].shoot_delay*2) {
+				ALVAR.jugador[0].count2++;
+			}
+			else {
+				if (!ALVAR.jugador[0].animationDirection) {													// Si el jugador esta mirando hacia la derecha
+						FireBullet(ALVAR, 1, 1, config, 0);
+					}
+				else {
+						FireBullet(ALVAR, -1, 1, config, 0);
+				}
+				ALVAR.jugador[0].bombs--;
+				ALVAR.jugador[0].count2 = 0;
+			}
+		}
+		*/
+	}
+	else if(!ALVAR.jugador[0].key.a && S) {
+		A = 0;
 	}
 
 	stretch_blit(ALVAR.fondoImage,canvas,config.FONDO_X,0,config.SCREEN_W,config.FONDO_H,0,0,config.SCREEN_W,config.SCREEN_H);
 	UpdatePlayer(ALVAR.jugador, config);
+	UpdateBullet(ALVAR.bullets, ALVAR.explosions, config);
+	UpdateExplosions(ALVAR.explosions, config);
 	DrawPlayer(ALVAR, config);
+	DrawBullet(ALVAR, config);
+	DrawExplosions(ALVAR.explosions, config);
 
 }
 

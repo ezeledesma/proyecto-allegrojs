@@ -9,12 +9,6 @@ function get_network_data(buffer) {
 				headers: {
 					"Content-Type": "application/json"
 				}
-				// ,body: JSON.stringify({
-				// 	tipo:"read",
-				// 	data:	{
-				// 		datos:"aca irian datos (con tipo:write)"
-				// 		}
-				// })
 			}
 		)
 		.then(response => response.json())

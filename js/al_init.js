@@ -68,10 +68,10 @@ function AL_INIT (config, ALVAR) {
 		// right:false
 		}
 	}];
-	ALVAR.bullets = [config.NUM_BULLETS];
+	ALVAR.bullets = [];
 	ALVAR.enemies = [config.NUM_ENEMIES];
 	ALVAR.enemiesDead = [config.NUM_ENEMIESDEAD];
 	ALVAR.enemiesBullet = [config.NUM_E_BULLETS];
-	ALVAR.explosions = [config.NUM_EXPLOSIONS];
+	ALVAR.explosions = [];
 
 }
