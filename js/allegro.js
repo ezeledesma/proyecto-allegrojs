@@ -1182,9 +1182,15 @@ function simple_blit(source,dest,x,y)
 /// @param sw,sh source dimensions
 /// @param dx,dy top-left bitmap corner coordinates in target bitmap
 /// @param dw,dh destination dimensions
-function stretch_blit(source,dest,sx,sy,sw,sh,dx,dy,dw,dh)
+function stretch_blit(source,dest,sx,sy,sw,sh,dx,dy,dw,dh,direction)
 {
+	dest.context.save();			// Puede volver lento el programa
+	if(direction == 1) {			// Puede volver lento el programa
+		dest.context.scale(-1,1);	// Puede volver lento el programa
+		dx = -dx - sw;			// Puede volver lento el programa
+	}					// Puede volver lento el programa
 	dest.context.drawImage(source.canvas,sx,sy,sw,sh,dx,dy,dw,dh);
+	dest.context.restore();			// Puede volver lento el programa
 }
 
 //@}
